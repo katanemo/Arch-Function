@@ -393,5 +393,5 @@ Feel free to open an issue or submit a pull request with your improvements.
 For questions and support:
 - Open an issue in this repository
 - Visit our [Hugging Face Hub](https://huggingface.co/katanemo)
-- Check the [Katanemo organization](https://huggingface.co/katanemo) on Hugging Face
+- Check the [Katanemo organization](https://github.com/katanemo) on Github
 
