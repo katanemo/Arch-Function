@@ -48,7 +48,7 @@ This project encompasses multiple model families specifically engineered for fun
 
 
 ### Collection 3: Agentic Models
-*Hugging Face Collection: [Arch-Agent](https://huggingface.co/collections/katanemo/arch-agent-[collection-id])*
+*Hugging Face Collection: [Arch-Agent](https://huggingface.co/collections/katanemo/arch-agent-685486ba8612d05809a0caef)*
 
 | Model Name | Size | Key Features | Downloads |
 |------------|------|--------------|-----------|
