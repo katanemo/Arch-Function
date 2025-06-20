@@ -21,7 +21,7 @@ This project encompasses multiple model families specifically engineered for fun
 
 ## 📰 News & Updates
 
--**June 2025**: 🏆🏆🏆 [Arch-Agent collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1)released for advanced multi-turn, multi-step workflow automation, achieving Top-3 performance on the [BFCL Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html#leaderboard)!
+- **June 2025**: 🏆🏆🏆 [Arch-Agent collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1)released for advanced multi-turn, multi-step workflow automation, achieving Top-3 performance on the [BFCL Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html#leaderboard)!
 - **February 2025**: 🚀🚀🚀 [Arch-Function-Chat collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1) launched with conversational function calling capabilities
 - **Dec 2024**: 🔥🔥🔥 Complete model suite updated with latest improvements across all sizes for [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68)
 - **Sep 2024**: 🏆🏆🏆 [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68) officially launched on Hugging Face, achieving Top-7 performance on the [BFCL Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html#leaderboard)!
