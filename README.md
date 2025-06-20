@@ -21,9 +21,10 @@ This project encompasses multiple model families specifically engineered for fun
 
 ## 📰 News & Updates
 
-- **February 2025**: [Arch-Function-Chat collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1) launched with conversational function calling capabilities
-- **Dec 2024**: Complete model suite updated with latest improvements across all sizes for [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68)
-- **Sep 2024**: [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68) officially launched on Hugging Face!
+-**June 2025**: 🏆🏆🏆 [Arch-Agent collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1)released for advanced multi-turn, multi-step workflow automation, achieving Top-3 performance on the [BFCL Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html#leaderboard)!
+- **February 2025**: 🚀🚀🚀 [Arch-Function-Chat collection](https://huggingface.co/collections/katanemo/arch-function-chat-67e6feb6e33793d82adeded1) launched with conversational function calling capabilities
+- **Dec 2024**: 🔥🔥🔥 Complete model suite updated with latest improvements across all sizes for [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68)
+- **Sep 2024**: 🏆🏆🏆 [Arch-Function collection](https://huggingface.co/collections/katanemo/arch-function-66f209a693ea8df14317ad68) officially launched on Hugging Face, achieving Top-7 performance on the [BFCL Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html#leaderboard)!
 
 ## 🚀 Current Model Collections
 
@@ -44,6 +45,17 @@ This project encompasses multiple model families specifically engineered for fun
 | **Arch-Function-Chat-1.5B** | 1.5B | • Conversational function calling<br>• Interactive agent capabilities<br>• Lightweight deployment | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Function-Chat-1.5B) |
 | **Arch-Function-Chat-3B** | 3B | • Advanced dialogue management<br>• Context-aware function usage<br>• Multi-turn conversations | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Function-Chat-3B) |
 | **Arch-Function-Chat-7B** | 7B | • Sophisticated reasoning<br>• Complex multi-step workflows<br>• Premium chat experience | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Function-Chat-7B) |
+
+
+### Collection 3: Agentic Models
+*Hugging Face Collection: [Arch-Agent](https://huggingface.co/collections/katanemo/arch-agent-[collection-id])*
+
+| Model Name | Size | Key Features | Downloads |
+|------------|------|--------------|-----------|
+| **Arch-Agent-1.5B** | 1.5B | • Lightweight autonomous workflows<br>• Edge-optimized performance<br>• Low resource requirements | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Agent-1.5B) |
+| **Arch-Agent-3B** | 3B | • Balanced autonomous performance<br>• Multi-step task execution<br>• High accuracy workflows | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Agent-3B) |
+| **Arch-Agent-7B** | 7B | • Advanced autonomous behavior<br>• Complex workflow orchestration<br>• Maximum performance | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Agent-7B) |
+| **Arch-Agent-32B** | 32B | • Premium autonomous systems<br>• Sophisticated multi-step workflows<br>• Superior capabilities | [🤗 HuggingFace](https://huggingface.co/katanemo/Arch-Agent-32B) |
 
 
 
