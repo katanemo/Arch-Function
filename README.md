@@ -146,7 +146,8 @@ import json
 from typing import Any, Dict, List
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_name = "katanemo/Arch-Function-Chat-1.5B" // Specify the desired model name here
+# Specify the desired model name here
+model_name = "katanemo/Arch-Agent-7B"
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name, device_map="auto", torch_dtype="auto", trust_remote_code=True
@@ -161,15 +162,11 @@ Our models perform best when using the recommended prompt format, which can be f
 # Please use the recommended prompt for each model.
 TASK_PROMPT = (
     "You are a helpful assistant designed to assist with the user query by making one or more function calls if needed."
-    "\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>\n{tools}\n</tools>"
-    "\n\nYour task is to decide which functions are needed and collect missing parameters if necessary."
-)
-
-FORMAT_PROMPT = (
-    "\n\nBased on your analysis, provide your response in one of the following JSON formats:"
-    '\n1. If no functions are needed:\n```json\n{"response": "Your response text here"}\n```'
-    '\n2. If functions are needed but some required parameters are missing:\n```json\n{"required_functions": ["func_name1", "func_name2", ...], "clarification": "Text asking for missing parameters"}\n```'
-    '\n3. If functions are needed and all required parameters are available:\n```json\n{"tool_calls": [{"name": "func_name1", "arguments": {"argument1": "value1", "argument2": "value2"}},... (more tool calls as required)]}\n```'
+    "\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\n"
+    "You are provided with function signatures within <tools></tools> XML tags:\n<tools>\n{tool_text}"
+    "\n</tools>\n\nFor each function call, return a json object with function name and arguments within "
+    """<tool_call></tool_call> XML tags:\n<tool_call>\n{{"name": <function-name>, """
+    """"arguments": <args-json-object>}}\n</tool_call>"""
 )
 
 # Define available tools
@@ -201,10 +198,10 @@ tools = [
 
 # Helper function to create the system prompt for our model
 def format_prompt(tools: List[Dict[str, Any]]):
-    tools = "\n".join(
+    tool_text = "\n".join(
         [json.dumps(tool["function"], ensure_ascii=False) for tool in tools]
     )
-    return TASK_PROMPT.format(tools=tools) + FORMAT_PROMPT
+    return TASK_PROMPT.format(tool_text=tool_text)
 
 
 system_prompt = format_prompt(tools)
@@ -218,12 +215,12 @@ messages = [
 #### 2.2.3 Run inference
 Now, you can run the following script to do inference with Arch-Function models.
 ```python
+#### 2.2.3 Run inference
 model_inputs = tokenizer.apply_chat_template(
-    messages, add_generation_prompt=True, return_tensors="pt"
+    messages, add_generation_prompt=True, return_tensors="pt", return_dict=True
 ).to(model.device)
 
 generated_ids = model.generate(**model_inputs, max_new_tokens=32768)
-
 generated_ids = [
     output_ids[len(input_ids) :]
     for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
@@ -256,9 +253,8 @@ pip install vllm
 
 #### 3.1.2 Start vLLM server
 ```bash
-vllm serve \
-    --model katanemo/Arch-Function-3B \
-    --host 0.0.0.0 \
+vllm serve katanemo/Arch-Agent-7B \
+    --host 127.0.0.1 \
     --port 8000 \
     --tensor-parallel-size 1
 ```
@@ -266,23 +262,22 @@ vllm serve \
 #### 3.1.3 Get responses
 To get responses from the vLLM server for function calling, first format prompts following [here](https://github.com/katanemo/Arch-Function?tab=readme-ov-file#222-format-prompts). Then, replace `messages` in the script below with the formatted prompts and run the script.
 ```python
-# Client code for vLLM
 from openai import OpenAI
 
 # Point to the local server
 client = OpenAI(
     api_key="EMPTY",
-    base_url="http://localhost:8000/v1",
+    base_url="http://127.0.0.1:8000/v1",
 )
 
-# 
+# Send requests and get responses from the server
 completion = client.chat.completions.create(
-    model="katanemo/Arch-Function-3B",
+    model="katanemo/Arch-Agent-7B",
     messages=[
         {"role": "user", "content": "Get the current temperature in San Francisco"}
     ],
     temperature=0.01,
-    max_tokens=512
+    max_tokens=1024
 )
 
 print(completion.choices[0].message.content)
@@ -293,38 +288,37 @@ print(completion.choices[0].message.content)
 [ollama](https://ollama.ai) provides easy local deployment with automatic model management. Below we provide scripts to show how to use ollama for deployment.
 
 
-#### 3.2.1 Install ollama (see [ollama](https://ollama.ai) for installation)
+#### 3.2.1 Install ollama
+Please see [ollama](https://ollama.ai) for installation. If necessary, use the following command to install ollama python library.
+```bash
+pip install ollama
+```
 
 #### 3.2.2 Start ollama server
-Specify your desired model name below and run the follwoing command to start the ollama server:
+Specify your desired model name below and run the follwoing command to start the ollama server. Note that `ollama` only supports `gguf` format.
 ```bash
-ollama run hf.co/katanemo/{MODEL_NAME}
+ollama run hf.co/katanemo/Arch-Agent-7B.gguf
 ```
 
 #### 3.2.3 Get responses
 Format prompts following [here](https://github.com/katanemo/Arch-Function?tab=readme-ov-file#222-format-prompts), and the replace `formatted_prompt` in the script below and run the script to get responses.
 
 ```python
-# Client code for Ollama
-import requests
-import json
+from ollama import Client
 
-def call_ollama(formatted_prompt):
-    response = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "arch-function", 
-            "prompt": formatted_prompt, 
-            "stream": False,
-        },
-    )
-    return json.loads(response.text)["response"]
+# Point to the local server. By default, it uses port 11434.
+client = Client(host="http://127.0.0.1:11434")
 
-# # Replace with formatted prompts
-formatted_prompt = "Calculate the area of a circle with radius 5"
+# Send requests and get responses from the server
+completion = client.chat(
+    model="hf.co/katanemo/Arch-Agent-1.5B.gguf",
+    messages=[
+        {"role": "user", "content": "Get the current temperature in San Francisco"}
+    ],
+    options={"temperature": 0.01, "num_ctx": 1024}
+)
 
-result = call_ollama("Calculate the area of a circle with radius 5")
-print(result)
+print(completion.message.content)
 ```
 
 
@@ -341,9 +335,9 @@ pip install sglang[all]
 #### 3.3.2 Start SGLang server
 ```bash
 python -m sglang.launch_server \
-    --model-path katanemo/Arch-Function-3B \
-    --host 0.0.0.0 \
-    --port 30000 \
+    --model-path katanemo/Arch-Agent-7B \
+    --host 127.0.0.1 \
+    --port 8000 \
     --tp 1 \
     --trust-remote-code
 ```
@@ -357,17 +351,17 @@ from openai import OpenAI
 # Point to the local server
 client = OpenAI(
     api_key="EMPTY",
-    base_url="http://localhost:8000/v1",
+    base_url="http://127.0.0.1:8000/v1",
 )
 
 # 
 completion = client.chat.completions.create(
-    model="katanemo/Arch-Function-3B",
+    model="katanemo/Arch-Agent-7B",
     messages=[
         {"role": "user", "content": "Get the current temperature in San Francisco"}
     ],
     temperature=0.01,
-    max_tokens=512
+    max_tokens=1024
 )
 
 print(completion.choices[0].message.content)
